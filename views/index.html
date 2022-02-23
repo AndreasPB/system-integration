@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+    />
+    <title>ToothClimbers</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <main>
+        <h1>Welcome to ToothClimbers!</h1>
+        <iframe
+          src="https://mitid.eu.pythonanywhere.com/"
+          frameborder="0"
+          style="height: 30rem"
+        >
+        </iframe>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  const login = async () => {
+    let conn = await fetch("/api-login", {
+      method: "POST",
+      body: new FormData(form)
+    })
+    let res = await conn.text()
+    console.log("res", res)
+    if (res == "NO") { parent.postMessage("NO", "*"); return}
+    parent.postMessage("YES", "*")
+  }
+
+  window.addEventListener(
+    "message",
+    event => {
+      if (event.origin === "https://mitid.eu.pythonanywhere.com") {
+        console.log(event.origin, event.data)
+      }
+    },
+    false
+  )
+</script>
