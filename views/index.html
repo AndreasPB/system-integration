@@ -30,7 +30,7 @@
         <iframe
           src="https://mitid.eu.pythonanywhere.com/"
           frameborder="0"
-          style="height: 30rem"
+          style="height: 40rem"
         >
         </iframe>
       </main>
@@ -38,23 +38,20 @@
   </body>
 </html>
 <script>
-  const login = async () => {
-    let conn = await fetch("/api-login", {
-      method: "POST",
-      body: new FormData(form)
-    })
-    let res = await conn.text()
-    console.log("res", res)
-    if (res == "NO") { parent.postMessage("NO", "*"); return}
-    parent.postMessage("YES", "*")
-  }
-
+  //
   window.addEventListener(
     "message",
     event => {
-      if (event.origin === "https://mitid.eu.pythonanywhere.com") {
-        console.log(event.origin, event.data)
-      }
+      if (event.data == "no") 
+        console.log("Nope")
+        return
+      const jwt = '{
+        "cpr": "12345",
+        "iat": 1646214674,
+        "exp": 1646215274
+      }'
+
+      console.log(event.origin, event.data)
     },
     false
   )
