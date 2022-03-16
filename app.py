@@ -1,24 +1,29 @@
-from bottle import default_app, get, post, run, view
+from faker import Faker
+import uuid
+import sqlite3
 
-#######################################
-@get("/")
-@view("index")
-def _():
-    return
+fake = Faker()
+
+print(fake.name())
+print(fake.first_name())
+print(fake.email())
+print(fake.password())
+
+users = [
+    {
+        "user_id": str(uuid.uuid4()),
+        "user_name": fake.first_name(),
+        "user_email": fake.email(),
+        "user_password": fake.password()
+    }
+    for _ in range(2)
+]
 
 
-@post("/api-login")
-def _():
-    return "NO"
-
-
-#######################################
-try:
-    # Server AWS | Production
-    import production
-
-    application = default_app()
-except:
-    # Localhost | Development
-    print("Running dev")
-    run(host="127.0.0.1", port=3333, debug=True, reloader=True, server="paste")
+with sqlite3.connect("database.db") as session:
+    counter = session.executemany(
+        "INSERT INTO users VALUES(:user_id, :user_name, :user_email, :user_password)", users
+    ).rowcount
+    if not counter:
+        print("Oops :D")
+    session.commit()
